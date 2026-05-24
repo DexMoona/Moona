@@ -1,0 +1,8 @@
+{
+  "name": "DEXMOONA",
+  "description": "A real-time decentralized exchange screener and analytics platform for tracking live token pairs, price charts, and multi-chain data.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
