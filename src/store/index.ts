@@ -176,7 +176,9 @@ export const useSettingsStore = create<SettingsState>((set, get) => {
       const root = window.document.documentElement;
       if (newTheme === "dark") {
         root.classList.add("dark");
+        root.classList.remove("light");
       } else {
+        root.classList.add("light");
         root.classList.remove("dark");
       }
       const updated = { ...get(), theme: newTheme };

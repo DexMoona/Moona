@@ -60,7 +60,7 @@ export default function App() {
   // Navigation tab states
   type SidebarTab = "screener" | "trending" | "new-pairs" | "gainers" | "watchlist" | "portfolio" | "alerts" | "settings" | "admin" | "mempool";
   const [activeTab, setActiveTab] = useState<SidebarTab>("screener");
-  const [deskviewEnabled, setDeskviewEnabled] = useState<boolean>(true);
+  const [deskviewEnabled, setDeskviewEnabled] = useState<boolean>(false);
   const [docsModalOpen, setDocsModalOpen] = useState<boolean>(false);
   
   // DEX and Wallet connections state variables
@@ -143,6 +143,18 @@ export default function App() {
     setDefaultChain, 
     setRefreshInterval 
   } = useSettingsStore();
+  
+  // Synchronize visual theme classes with document HTML tag
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+    } else {
+      root.classList.add("light");
+      root.classList.remove("dark");
+    }
+  }, [theme]);
 
   // Apply default chain settings on startup
   useEffect(() => {
@@ -456,8 +468,8 @@ export default function App() {
       {/* STICKY HEADER VIEW (Screener title, Search, Alert triggers, dark mode) */}
       <header className="sticky top-0 z-40 bg-[#080b0f] border-b border-[#151c27] h-16 px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center gap-4 flex-1">
-          {/* Logo Brand Title with official Dexmoona Mascot Image and brand name 'DEXMOONA' */}
-          <div className="flex items-center gap-2.5 select-none cursor-pointer shrink-0 animate-fade-in" onClick={() => { setSelectedPair(null); setActiveTab("screener"); }}>
+          {/* Logo Brand Title with official Dexmoona Mascot Image and brand name 'DEXMoona' */}
+          <div className="flex items-center gap-2 select-none cursor-pointer shrink-0 animate-fade-in" onClick={() => { setSelectedPair(null); setActiveTab("screener"); }}>
             <div className="w-8.5 h-8.5 rounded-lg bg-[#ffffff] hover:bg-cyan-100 flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.2)] transition-all overflow-hidden border border-[#22d3ee]/20">
               <img 
                 src="https://raw.githubusercontent.com/DexMoona/Doc/refs/heads/main/Moona%20logo.jpg" 
@@ -466,19 +478,19 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <span className="hidden sm:inline-block font-sans font-black tracking-tighter text-lg bg-gradient-to-r from-white via-slate-100 to-[#22d3ee] bg-clip-text text-transparent">
-              DEXMOONA
+            <span className="font-sans font-black tracking-tighter text-sm sm:text-base md:text-lg bg-gradient-to-r from-white via-slate-100 to-[#22d3ee] bg-clip-text text-transparent">
+              DEXMoona
             </span>
           </div>
 
-          {/* Global Dexview-styled Search Bar with Custom Placeholder */}
-          <div className="flex items-center flex-1 max-w-sm">
+          {/* Global Dexview-styled Search Bar with Custom Placeholder and Correct Length */}
+          <div className="flex items-center flex-1 max-w-[160px] xs:max-w-[220px] sm:max-w-[300px] md:max-w-[380px] lg:max-w-[450px]">
             <button 
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 bg-[#0d1218] hover:bg-[#111721] rounded-md px-3 py-1.5 border border-[#192230] text-[11px] text-slate-400 hover:text-slate-200 transition-all w-full text-left relative focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 bg-[#0d1218] hover:bg-[#111721] rounded-md px-2.5 py-1.5 border border-[#192230] text-[11px] text-slate-400 hover:text-slate-200 transition-all w-full text-left relative focus:outline-none cursor-pointer"
             >
               <Search className="w-3.5 h-3.5 text-[#22d3ee] shrink-0" />
-              <span className="truncate">Search by token name, symbol or address...</span>
+              <span className="truncate">Search name / token contract...</span>
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
                 <kbd className="hidden md:inline font-mono text-[8px] bg-[#070b0f] text-slate-500 px-1.2 py-0.2 rounded border border-slate-800 select-none">
                   Ctrl+K
@@ -534,37 +546,7 @@ export default function App() {
             <span>{watchPairs.length} Starred</span>
           </div>
 
-          {/* Deskview Mode Toggle visual pills (ON/OFF) */}
-          <button 
-            onClick={() => setDeskviewEnabled(!deskviewEnabled)} 
-            className={`px-2 py-1 text-[10px] uppercase font-bold rounded-md border flex items-center gap-1 transition-all ${deskviewEnabled ? "bg-[#22d3ee]/10 text-[#22d3ee] border-[#22d3ee]/30 shadow-[0_0_12px_rgba(34,211,238,0.15)]" : "bg-slate-950 border-[#192230] text-slate-500 hover:text-slate-300"}`}
-            title="Toggle Deskview Trading HUD Layout"
-          >
-            <span className="text-[11px]">{deskviewEnabled ? "⚡" : "💤"}</span>
-            <span>HUD: {deskviewEnabled ? "DESK" : "LITE"}</span>
-          </button>
 
-          {/* Connect Wallet Button */}
-          <button 
-            onClick={() => {
-              if (walletConnected) {
-                setWalletModalOpen(true);
-              } else {
-                setWalletConnected(true);
-                setWalletAddress("0xda91ec87...d912");
-                setWalletType("metamask");
-                setWalletBalance("4.218 ETH");
-              }
-            }}
-            className={`px-3.5 py-1 text-[11px] font-extrabold uppercase rounded-md border tracking-wide transition-all shadow-sm flex items-center gap-1.5 cursor-pointer ${
-              walletConnected 
-                ? "bg-emerald-950/20 text-emerald-400 border-emerald-900/40 hover:bg-emerald-900/30" 
-                : "bg-gradient-to-r from-[#22d3ee] to-[#0ea5e9] text-slate-950 border-transparent hover:brightness-105 active:scale-95"
-            }`}
-          >
-            <Wallet className="w-3.5 h-3.5" />
-            <span className="truncate max-w-[90px]">{walletConnected ? "Connected" : "Connect"}</span>
-          </button>
 
           {/* Unified Hamburger Menu Button */}
           <button 
@@ -2136,6 +2118,19 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Tiny floating theme trigger button */}
+      <button 
+        onClick={() => toggleTheme()}
+        className="fixed bottom-3 right-3 z-50 p-2 bg-slate-900/95 hover:bg-slate-800 text-slate-300 hover:text-white rounded-full border border-slate-800 hover:border-slate-605 transition shadow-[0_4px_16px_rgba(0,0,0,0.6)] cursor-pointer flex items-center justify-center w-8 h-8 focus:outline-none"
+        title="Toggle Visual Theme"
+      >
+        {theme === "dark" ? (
+          <Sun className="w-4 h-4 text-yellow-500 fill-yellow-500/10" />
+        ) : (
+          <Moon className="w-4 h-4 text-indigo-500 fill-indigo-500/10" />
+        )}
+      </button>
     </div>
   );
 }

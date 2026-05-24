@@ -17,6 +17,16 @@ body {
     radial-gradient(at 50% 100%, rgba(14, 116, 144, 0.08) 0, transparent 40%),
     linear-gradient(rgba(10, 12, 16, 0.95), rgba(5, 7, 10, 0.98));
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+}
+
+:root.light body {
+  background-color: #f3f6fa;
+  color: #0f172a;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(14, 116, 144, 0.05) 0, transparent 40%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0, transparent 50%),
+    linear-gradient(rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.98));
 }
 
 body::before {
@@ -29,6 +39,12 @@ body::before {
     linear-gradient(to right, rgba(255, 255, 255, 0.008) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.008) 1px, transparent 1px);
   z-index: -1;
+}
+
+:root.light body::before {
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px);
 }
 
 body::after {
@@ -118,3 +134,61 @@ body::after {
 ::-webkit-scrollbar-thumb:hover {
   background: #3e4857;
 }
+
+/* Light Mode Overrides for panels and elements */
+:root.light .glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+:root.light .glass-panel-heavy {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+:root.light .bg-[#0c0e12] {
+  background-color: #ffffff !important;
+}
+
+:root.light .bg-[#0c0e12]/90 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+:root.light .bg-[#090e12] {
+  background-color: #f1f5f9 !important;
+}
+
+:root.light .border-slate-900 {
+  border-color: #e2e8f0 !important;
+}
+
+:root.light .border-[#1b2330]/80 {
+  border-color: #cbd5e1 !important;
+}
+
+:root.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+:root.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+:root.light .text-slate-100 {
+  color: #0f172a !important;
+}
+
+:root.light .text-white {
+  color: #020617 !important;
+}
+
+:root.light input {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+:root.light input::placeholder {
+  color: #94a3b8 !important;
+}
+

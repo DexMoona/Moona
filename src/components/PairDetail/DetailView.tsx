@@ -33,7 +33,8 @@ import {
   TrendingUp,
   Clock,
   Coins,
-  DollarSign
+  DollarSign,
+  X
 } from "lucide-react";
 
 interface DetailViewProps {
@@ -147,7 +148,18 @@ export default function DetailView({ pair, onBack }: DetailViewProps) {
   const chainCfg = SUPPORTED_CHAINS.find(c => c.id === pair.chainId.toLowerCase()) || SUPPORTED_CHAINS[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* Absolute Close Button in Upper Right Corner */}
+      <div className="absolute -top-1 right-0 md:top-0 md:right-0 z-30">
+        <button 
+          onClick={onBack}
+          className="p-2.5 bg-rose-500/15 hover:bg-rose-600 text-rose-500 hover:text-white border border-rose-500/30 rounded-lg transition-all duration-150 cursor-pointer flex items-center justify-center shadow-[0_0_12px_rgba(239,68,68,0.2)] focus:outline-none"
+          title="Close details and go back to screener"
+        >
+          <X className="w-5 h-5 font-bold shrink-0" />
+        </button>
+      </div>
+
       {/* Toast Notification alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 font-semibold px-4 py-3 rounded-lg shadow-xl border border-amber-400 flex items-center gap-2 animate-bounce">
@@ -157,15 +169,8 @@ export default function DetailView({ pair, onBack }: DetailViewProps) {
       )}
 
       {/* Detail header menu bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-850">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 pr-14 md:pr-4 rounded-xl border border-slate-850">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={onBack}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-md text-slate-300 hover:text-white transition text-xs font-semibold"
-          >
-            ← Screener
-          </button>
-          
           <div className="flex items-center gap-2">
             <TokenLogo
               chainId={pair.chainId}

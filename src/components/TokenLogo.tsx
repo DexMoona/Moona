@@ -38,6 +38,12 @@ export default function TokenLogo({
   const cleanAddr = address.trim();
 
   if (cleanChain && cleanAddr) {
+    // 0. Solana specialized proxies for robust image availability
+    if (cleanChain === "sol" || cleanChain === "solana") {
+      srcCandidates.push(`https://logo.key.app/t/${cleanAddr}`);
+      srcCandidates.push(`https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/${cleanAddr}/logo.png`);
+    }
+
     // 1. DexScreener dynamic CDN candidate
     srcCandidates.push(`https://dd.dexscreener.com/ds-data/tokens/${cleanChain}/${cleanAddr}.png`);
 
